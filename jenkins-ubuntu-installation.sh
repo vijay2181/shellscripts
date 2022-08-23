@@ -14,3 +14,5 @@ sudo systemctl start jenkins
 sudo systemctl status jenkins
 
 #sudo sh +x jenkins-ubuntu-installation.sh 
+#netstat -ntlp | grep 8080
+#to get public-ip from command line use "curl ifconfig.me/ip"
