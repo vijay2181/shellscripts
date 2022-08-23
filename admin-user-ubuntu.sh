@@ -17,6 +17,6 @@ else
         mkdir -p /home/$RESULT
         cp -r /root/.ssh /home/$RESULT/.ssh
         chown -R $RESULT:$RESULT /home/$RESULT
-        echo "ubuntu    ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
+        echo "$RESULT    ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
         echo "User $RESULT Created Successfully ...."
 fi
