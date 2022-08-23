@@ -2,6 +2,7 @@
 
 sudo apt-get update
 sudo apt install openjdk-8-jdk -y
+sudo apt install gnupg rng-tools docker.io -y
 
 # Install Jenkins
 ## Before install is necessary to add Jenkins to trusted keys and source list
@@ -11,3 +12,5 @@ sudo apt-get update
 sudo apt-get install jenkins
 sudo systemctl start jenkins
 sudo systemctl status jenkins
+
+#sudo sh +x jenkins-ubuntu-installation.sh 
