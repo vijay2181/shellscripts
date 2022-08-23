@@ -1,6 +1,8 @@
 #!/bin/bash
 
 sudo apt-get update
+sudo apt install openjdk-8-jdk -y
+
 # Install Jenkins
 ## Before install is necessary to add Jenkins to trusted keys and source list
 wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
