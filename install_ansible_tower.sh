@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#take redhat8 server
+#minimum 2 core cupu's and 8gb RAM
+#install python3 and ansible
+#sudo yum -y install python3 python3-pip
+#sudo pip3 install ansible
+#access ansible tower http://<Tower server name>/
+
 #https://releases.ansible.com/ansible-tower/setup/?extIdCarryOver=true&sc_cid=701f2000001OH7YAAW
 
 function must_be_root() {
