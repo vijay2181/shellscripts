@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -o nounset \
+    -o errexit
+
+function log_msg {
+current_time=$(date "+%Y-%m-%d %H:%M:%S.%3N")
+log_level=$1
+log_msg="${@:2}"
+echo -n "[$current_time] $log_level - $log_msg"
+}
+
+function log_error {
+log_msg "ERROR" "$@"
+}
+
+function log_info {
+log_msg "INFO " "$@"
+}
+
+function log_warn {
+log_msg "WARNING" "$@"
+}
+
+
+PASS="password"
+log_info "Deleting previous (if any)..."
+mkdir -p ca
+echo " OK!"
+CA_CERT=ca/kafka-ca.crt
+CA_KEY=ca/kafka-ca.key
+
+# Generate CA key
+if [[ ! -f $CA_CERT ]] && [[ ! -f $CA_KEY ]];then
+openssl req -new -x509 -keyout $CA_KEY -out $CA_CERT -days 3650 -subj '/CN=Kafka CA/OU=Devops/O=Vijay Pvt Ltd/L=Hyderabad/C=INDIA' -passin pass:$PASS -passout pass:$PASS >/dev/null 2>&1
+log_info "Creating CA..."
+echo " OK!"
+else
+log_warn "CA certs already exists - Skip creating it.."
+echo " OK!"
+fi
+
+
+AWS_REGION="us-west-2"
+ENV="Test"
+SERVICE="kafka"
+SSL="true"
+if [[ $SERVICE == "kafka" ]] && [[ $SSL == "true" ]];then
+for file in crt key; do
+   printf "uploading CA $file cert to Parameterstore...."
+   aws ssm put-parameter \
+    --region $AWS_REGION
+    --name "/$ENV/$SERVICE/$file" \
+    --key-id alias/aws/ssm
+    --type "SecureString" \
+	--value file://ca/kafka-ca.$file > /dev/null 2>&1 
+   echo "OK!"
+done
+fi
