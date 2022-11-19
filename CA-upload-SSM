@@ -48,12 +48,13 @@ SSL="true"
 if [[ $SERVICE == "kafka" ]] && [[ $SSL == "true" ]];then
 for file in crt key; do
    printf "uploading CA $file cert to Parameterstore...."
-   aws ssm put-parameter \
-    --region $AWS_REGION
-    --name "/$ENV/$SERVICE/$file" \
-    --key-id alias/aws/ssm
-    --type "SecureString" \
-	--value file://ca/kafka-ca.$file > /dev/null 2>&1 
+   aws ssm put-parameter --profile test\
+    --region us-west-2 \
+    --name /$ENV/$SERVICE/$file \
+    --type SecureString \
+    --key-id alias/aws/ssm \
+    --value "$(cat /home/ubuntu/ca/kafka-ca.$file)" \
+	--overwrite
    echo "OK!"
 done
 fi
