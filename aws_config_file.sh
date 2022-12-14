@@ -2,7 +2,6 @@
 
 #USAGE: aws_config_file.sh [profile] [Access_key] [Secrect_key]
 
-# Fill your Access and secret keys here
 config () {
    cat >> ~/.aws/config << EOF
 [profile $1]
