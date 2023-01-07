@@ -18,3 +18,22 @@ aws iam list-users --output text --query 'Users[?contains(UserName, `ad`) == `fa
 aws rds describe-db-engine-versions \
 --query 'DBEngineVersions[]|[?contains(Engine, `mysql`) == `true`].[Engine,DBEngineVersionDescription]' \
 | sort -r -k 2 | head -1
+
+
+
+#############################################################
+
+
+
+roles=$(aws iam list-roles --query 'Roles[?starts_with(RoleName, `test`)].RoleName' --output text)
+
+for role in $roles; do
+  echo deleting policies for role $role
+  policies=$(aws iam list-role-policies --role-name=$role --query PolicyNames --output text)
+  for policy in $policies; do 
+    echo deleting policy $policy for role $role
+    aws iam delete-role-policy --policy-name $policy --role-name $role
+  done
+  echo deleting role $role
+  aws iam delete-role --role-name $role
+done
